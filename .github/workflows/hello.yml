@@ -1,14 +1,36 @@
-name: Hello Workflow
+name: CICD
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
 
 jobs:
-  greet:
+
+  code:
     runs-on: ubuntu-latest
 
-    steps:  
-      - name: Say hello
-        run: echo "Hello Rohit"
+    steps:
+      - name: Checkout code
+        run: echo "Code cloned"
+
+  build:
+    needs: code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Build container
+        run: echo "Docker build completed"
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test container
+        run: echo "Tests passed"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy application
+        run: echo "Application deployed"
